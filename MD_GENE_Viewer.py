@@ -29,19 +29,19 @@ class Main(QtWidgets.QMainWindow):
 
         self.webtab04 = QWebView()
         self.webtab04.setObjectName("COSMIC")
-        self.webtab04#.load(QtCore.QUrl("https://cancer.sanger.ac.uk/cosmic/"))
+        self.webtab04.load(QtCore.QUrl("https://cancer.sanger.ac.uk/cosmic/"))
 
         self.webtab05 = QWebView()
         self.webtab05.setObjectName("Human Protein Altas")
         self.webtab05.load(QtCore.QUrl("https://www.proteinatlas.org/"))
 #
-        #self.webtab06 = QWebView()
-        #self.webtab06.setObjectName("dict-Webster")
-        #self.webtab06.load(QtCore.QUrl("https://www.merriam-webster.com/dictionary/"))
+        self.webtab06 = QWebView()
+        self.webtab06.setObjectName("Genetics Home Ref")
+        self.webtab06.load(QtCore.QUrl("https://ghr.nlm.nih.gov/gene/"))
 #
-        #self.webtab11 = QWebView()
-        #self.webtab11.setObjectName("Web-搜狗")
-        #self.webtab11.load(QtCore.QUrl("http://fanyi.sogou.com/"))
+        self.webtab07 = QWebView()
+        self.webtab07.setObjectName("OMIM")
+        self.webtab07.load(QtCore.QUrl("https://omim.org/"))
 #
         #self.webtab12 = QWebView()
         #self.webtab12.setObjectName("Web-谷歌")
@@ -51,19 +51,17 @@ class Main(QtWidgets.QMainWindow):
         #self.webtab13.setObjectName("Web-百度")
         #self.webtab13.load(QtCore.QUrl("http://fanyi.baidu.com/"))
 #
-#
-#
         #self.webtab15 = QWebView()
         #self.webtab15.setObjectName("Web-OzDict")
         #self.webtab15.load(QtCore.QUrl("https://www.onelook.com/"))
 
-        self.tabs.addTab(self.webtab01, "GeneCard")
         self.tabs.addTab(self.webtab02, "WIKI")
+        self.tabs.addTab(self.webtab06, "GeneticsHome")
         self.tabs.addTab(self.webtab03, "NCBI")
+        self.tabs.addTab(self.webtab01, "GeneCard")
         self.tabs.addTab(self.webtab04, "COSMIC")
         self.tabs.addTab(self.webtab05, "HPA")
-        #self.tabs.addTab(self.webtab12, "谷歌翻译")
-        #self.tabs.addTab(self.webtab13, "百度翻译")
+        self.tabs.addTab(self.webtab07, "OMIM")
         #self.tabs.addTab(self.webtab14, "维基百科")
         #self.tabs.addTab(self.webtab05, "UrbanDict")
         #self.tabs.addTab(self.webtab06, "Webster")
@@ -77,6 +75,7 @@ class Main(QtWidgets.QMainWindow):
         self.outputLine = QtWidgets.QLineEdit()
         self.outputLine.setObjectName("outputLineEditor")
         self.outputLine.setFixedHeight(20)
+        self.webtab01.loadStarted.connect(self.initURL)
         #self.outputLine.setText(self.webtab01.url().toString()) 还不太会搞这个的初始化
         self.tabs.currentChanged.connect(self.getURL)
         #self.outputLine..connect(self.getURL)
@@ -94,18 +93,20 @@ class Main(QtWidgets.QMainWindow):
         self.outputLine.setText(self.tabs.currentWidget().url().toString())
         #print(self.tabs.currentIndex())
 
+    def initURL(self):
+        self.outputLine.setText(self.webtab01.url().toString())
 
     def translateText(self):
         word = self.inputLine.text()
         #print(word)
-        self.webtab01.load(QtCore.QUrl("https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + word))
+        self.webtab01.load(QtCore.QUrl("https://www.genecards.org/Search/Keyword?queryString=" + word))
         #self.webtab01.load(QtCore.QUrl("http://www.iciba.com/" + word))
         self.webtab02.load(QtCore.QUrl("https://en.wikipedia.org/wiki/" + word))
         self.webtab03.load(QtCore.QUrl("https://www.ncbi.nlm.nih.gov/gene/?term=" + word))
         self.webtab04.load(QtCore.QUrl("https://cancer.sanger.ac.uk/cosmic/search?q=" + word))
         self.webtab05.load(QtCore.QUrl("https://www.proteinatlas.org/search/" + word))
-        #self.webtab06.load(QtCore.QUrl("http://dict.youdao.com/w/eng/" + word + "/#keyfrom=dict2.index"))
-        #self.webtab07.load(QtCore.QUrl("https://www.urbandictionary.com/" + word))
+        self.webtab06.load(QtCore.QUrl("https://ghr.nlm.nih.gov/gene/" + word))
+        self.webtab07.load(QtCore.QUrl("https://omim.org/search/?index=entry&sort=score+desc%2C+prefix_sort+desc&start=1&limit=10&search=" + word))
         #self.webtab08.load(QtCore.QUrl("https://www.merriam-webster.com/dictionary/" + word))
         #self.webtab09.load(QtCore.QUrl("https://en.wikipedia.org/wiki/" + word))
         #self.webtab10.load(QtCore.QUrl("https://www.onelook.com/?w=" + word))
